@@ -6,10 +6,10 @@ require 'ant_tsp/version'
 Gem::Specification.new do |spec|
   spec.name          = "ant_tsp"
   spec.version       = AntTsp::VERSION
-  spec.authors       = ["dusan"]
-  spec.email         = ["dusan.milanovic@gecko.rs"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.authors       = ["no-glue"]
+  spec.email         = ["nikolapav1985@gmail.com"]
+  spec.description   = %q{ant to solve travelling salesman}
+  spec.summary       = %q{ant to solve travelling salesman}
   spec.homepage      = ""
   spec.license       = "MIT"
 
