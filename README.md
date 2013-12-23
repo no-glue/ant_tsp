@@ -1,6 +1,6 @@
 # AntTsp
 
-TODO: Write a gem description
+    Ants to solve travelling salesman
 
 ## Installation
 
@@ -18,9 +18,12 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
-
-## Contributing
+    AntTsp::AntTsp.new.search([[565,575],[25,185]], 50, 30, 0.6, 2.5, 1.0)
+    50 - max iterations
+    30 - number of ants
+    0.6 - pheromone decay
+    2.5 - c heuristic
+    1.0 - c history
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
