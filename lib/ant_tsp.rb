@@ -8,20 +8,21 @@ module AntTsp
     end
 
     # cost, of the tour
-    def cost(shake, cities)
+    def cost(sh, cities)
       distance = 0
-      shake.each_with_index do |c1, i|
-        c2 = (i == shake.size - 1) ? shake[0] : shake[i + i]
+      sh.each_with_index do |c1, i|
+        c2 = (i == (sh.size - 1)) ? sh[0] : sh[i + 1]
         distance += euc_2d(cities[c1], cities[c2])
       end
+      distance
     end
 
     # shake, cities
     def shake(cities)
-      shake = Array.new(cities.size){|i| i}
-      shake.each_index do |i|
-        r = rand(shake.size - i) + i
-        shake[r], shake[i] = shake[i], shake[r]
+      sh = Array.new(cities.size){|i| i}
+      sh.each_index do |i|
+        r = rand(sh.size - i) + i
+        sh[r], sh[i] = sh[i], sh[r]
       end
       sh
     end
@@ -33,7 +34,7 @@ module AntTsp
     end
 
     # choices, get them
-    def get_choices(cities, last_city, skip, pheromone, c_heur, c_history)
+    def get_choices(cities, last_city, skip, pheromone, c_heur, c_hist)
       choices = []
       cities.each_with_index do |position, i|
         next if skip.include?(i)
@@ -62,9 +63,9 @@ module AntTsp
     # next city, add them up
     def stepwise_const(cities, phero, c_heur, c_hist)
       shake = []
-      shake << random(cities.size)
+      shake << rand(cities.size)
       begin
-        choices = get_choices(cities, shake.last, shake, phero, c_heur, c_history)
+        choices = get_choices(cities, shake.last, shake, phero, c_heur, c_hist)
         next_city = select_next_city(choices)
         shake << next_city
       end until shake.size == cities.size
@@ -84,7 +85,7 @@ module AntTsp
     def update_pheromone(pheromone, solutions)
       solutions.each do |other|
         other[:vector].each_with_index do |x, i|
-          y = (i == (other[:vector].size - 1)) ? other[:vector][0] : other[:vector][i + i]
+          y = (i == (other[:vector].size - 1)) ? other[:vector][0] : other[:vector][i + 1]
           pheromone[x][y] += (1.0 / other[:cost])
           pheromone[y][x] += (1.0 / other[:cost])
         end
@@ -95,7 +96,7 @@ module AntTsp
     def search(cities, max_it, num_ants, decay_factor, c_heur, c_hist)
       best = {:vector => shake(cities)}
       best[:cost] = cost(best[:vector], cities)
-      pheromone = setup_pher_matrix(cities.size, best[:cost])
+      pheromone = setup_phero_matrix(cities.size, best[:cost])
       max_it.times do |iter|
         solutions = []
         num_ants.times do
@@ -110,7 +111,7 @@ module AntTsp
         decay_pheromone(pheromone, decay_factor)
         # +++ update phero
         update_pheromone(pheromone, solutions)
-        puts " > iteration {(iter + 1)}, best {best[:cost]}"
+        puts " > iteration #{(iter + 1)}, best #{best[:cost]}"
       end
       best
     end
